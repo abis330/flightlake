@@ -1,0 +1,31 @@
+# Example mapping for the CMU AirLab ALFA fixed-wing fault dataset (processed CSV release:
+# one folder per sequence, one CSV per ROS topic). Column names follow the rostopic-echo CSV
+# convention ("%time" in ns, "field.*"). VERIFY against your download before use: topic
+# file names differ between sequences and dataset versions.
+airframe: Carbon-Z T-28
+firmware: PX4 (ALFA)
+flight_id_from: dirname
+time: {column: "%time", scale: 1.0e-9}
+files:
+  "*mavros-nav_info-airspeed.csv":
+    airspeed_mps: {column: field.measured}
+  "*mavros-global_position-global.csv":
+    lat_deg: {column: field.latitude}
+    lon_deg: {column: field.longitude}
+    alt_msl_m: {column: field.altitude}
+  "*mavros-nav_info-roll.csv":
+    roll_deg: {column: field.measured}
+  "*mavros-nav_info-pitch.csv":
+    pitch_deg: {column: field.measured}
+  "*mavros-nav_info-yaw.csv":
+    yaw_deg: {column: field.measured}
+  "*mavros-imu-data.csv":
+    p_dps: {column: field.angular_velocity.x, scale: 57.29578}
+    q_dps: {column: field.angular_velocity.y, scale: 57.29578}
+    r_dps: {column: field.angular_velocity.z, scale: 57.29578}
+    ax_mps2: {column: field.linear_acceleration.x}
+    ay_mps2: {column: field.linear_acceleration.y}
+    az_mps2: {column: field.linear_acceleration.z}
+  "*mavros-battery.csv":
+    batt_v: {column: field.voltage}
+    batt_a: {column: field.current}

@@ -1,0 +1,12 @@
+services:
+  # one-shot job: simulate a fleet and ingest it (replace with real logs in ./data/raw)
+  seed:
+    build: .
+    volumes: ["./data:/data"]
+    command: sh -c "flightlake simulate --n 100 --out /data/raw && flightlake ingest /data/raw --lake /data/lake"
+  api:
+    build: .
+    volumes: ["./data:/data"]
+    ports: ["8000:8000"]
+    depends_on:
+      seed: {condition: service_completed_successfully}
